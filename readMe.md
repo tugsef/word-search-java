@@ -7,7 +7,7 @@ package com.tugsef.worldlist.business.abstracts;
 import java.util.List;
 
 import com.tugsef.worldlist.entities.Word;
-
+// Oluşturuldu
 public interface WordService {
 
 	List<Word> allWord();
@@ -49,7 +49,7 @@ import com.tugsef.worldlist.entities.Word;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+// Service oluşturuldu
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -63,6 +63,7 @@ public class WordManager implements WordService {
 	public List<Word> allWord() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Word> worList = null;
+		// wordList dosyası okunuyor. List olarak oluşturuldu.
 		try {
 			worList = objectMapper.readValue(new File("wordList.json"), new TypeReference<List<Word>>() {
 			});
@@ -81,11 +82,16 @@ public class WordManager implements WordService {
 		
 		String filePathTxt= "wordList.txt";
 		List<Word> words = allWord();
+		// list uzunluğu kadar random değer ataması yapılacak
 		int randomWord = random.nextInt(words.size() - 1);
 		
 
 		long startTime = System.currentTimeMillis();
+
+		// Dosyanın maaksimum boyutu bayt değeri(4 GB)	
 		long maksimumBoyut = 4294967296L;
+
+		//Random değere göre dosyaya kelimeleri yazar.
 		try {
 			File filePath = new File(filePathTxt);
 
@@ -117,6 +123,7 @@ public class WordManager implements WordService {
 
 	@Override
 	public void wordsDesc() {
+		//Kelimelerin tekrarından kaçınmak için map kullandım.
 		Map<String, Integer> wordCounts = null;
 		List<String> wordAll = null;
 		try {
@@ -128,6 +135,7 @@ public class WordManager implements WordService {
 				String[] words = line.split("\\s+");
 				wordAll = new ArrayList<String>();
 
+				//kelimelerin başında ve sonundaki karakterler silinir.
 				for (String word : words) {
 					word = word.replaceAll("[.,=:;()-]", "");
 					if (word.length() > 4)
@@ -144,6 +152,8 @@ public class WordManager implements WordService {
 			reader.close();
 			long endTime = System.currentTimeMillis();
 			logger.info("En çok kullanılan en çok kelimeler bulundu." + (endTime-startTime) + " sn de tamamlandı.");
+
+			//Kelime tekrar sayısı azalana doğru
 			this.businesRules.sortWordAll(wordCounts);
 			
 
@@ -168,7 +178,7 @@ import lombok.Data;
 public class WordBusinesRules {
 
 	public void sortWordAll(Map<String, Integer> wordCounts){
-		
+		// Kelimeler ve tekrarlarını bulur ve ilk on değeri ekrana yazar
 		List<Map.Entry<String, Integer>> list = new ArrayList<>(wordCounts.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
 			@Override
