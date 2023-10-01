@@ -158,3 +158,5 @@ README.html
 *.iml
 .idea
 .exercism
+
+wordList.txt
