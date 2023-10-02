@@ -1,13 +1,49 @@
 
+- Sonuç
+
+```log
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.4)
+
+2023-10-02T11:55:59.113+03:00  INFO 2489 --- [           main] c.tugsef.worldlist.WorldListApplication  : Starting WorldListApplication using Java 17.0.8 with PID 2489 (/Users/sefademirtas/Desktop/worldList/world-list/target/classes started by sefademirtas in /Users/sefademirtas/Desktop/worldList/world-list)
+2023-10-02T11:55:59.114+03:00  INFO 2489 --- [           main] c.tugsef.worldlist.WorldListApplication  : No active profile set, falling back to 1 default profile: "default"
+2023-10-02T11:55:59.516+03:00  INFO 2489 --- [           main] c.tugsef.worldlist.WorldListApplication  : Started WorldListApplication in 0.563 seconds (process running for 0.722)
+2023-10-02T11:55:59.690+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : Created wordlist size: 92406
+2023-10-02T11:55:59.690+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : Created file: wordList.txt
+2023-10-02T11:55:59.690+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : Random ilk değer atandı(index): 72815 dosya yazılıyor...
+2023-10-02T11:58:21.985+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : Random olarak değerler dosya ya yazıldı(İlk değer): (kuvve : Düşünce, niyet. Bir devletin silahlı kuvvetlerinin durumu veya gücü. Yeti. )
+2023-10-02T11:58:21.988+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : 4.0 GB dosya oluşturuldu. 0 saat 2 dk 22 sn tamamlandı.
+2023-10-02T12:04:32.567+03:00  INFO 2489 --- [           main] c.t.w.business.concretes.WordManager     : En çok kullanılan en çok kelimeler bulundu.0 saat 6 dk 10 sn tamamlandı.
+           Sıra          Kelime   Tekrar Sayısı
+             1         durumu           3597683
+             2          kimse           2978002
+             3     kullanılan           2559100
+             4          olmak           2294841
+             5          etmek           2231271
+             6       bulunmak           1782450
+             7         olarak           1527319
+             8      anlamında           1335877
+             9        olmayan           1308213
+            10         duruma           1256157
+
+2023-10-02T12:04:32.615+03:00  INFO 2489 --- [           main] c.t.worldlist.controller.WordController  : Toplam Okuma Yazma Geçen Süre :0 saat 8 dk 33 sn tamamlandı.
+```
+
+
+
+
 - WordService 
 
 ```java
-package com.tugsef.worldlist.business.abstracts;
-
 import java.util.List;
 
 import com.tugsef.worldlist.entities.Word;
-// Oluşturuldu
+
 public interface WordService {
 
 	List<Word> allWord();
@@ -22,8 +58,6 @@ public interface WordService {
 
 -  WordManager
 ```java
-
-package com.tugsef.worldlist.business.concretes;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,23 +81,22 @@ import com.tugsef.worldlist.business.rules.WordBusinesRules;
 import com.tugsef.worldlist.entities.Word;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-// Service oluşturuldu
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class WordManager implements WordService {
 
 	private Logger logger = LoggerFactory.getLogger(WordManager.class);
+
 	private WordBusinesRules businesRules = new WordBusinesRules();
+
 	private Random random = new Random();
 
 	@Override
 	public List<Word> allWord() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Word> worList = null;
-		// wordList dosyası okunuyor. List olarak oluşturuldu.
 		try {
 			worList = objectMapper.readValue(new File("wordList.json"), new TypeReference<List<Word>>() {
 			});
@@ -79,19 +112,13 @@ public class WordManager implements WordService {
 
 	@Override
 	public void startWordTxt() {
-		
-		String filePathTxt= "wordList.txt";
+
+		String filePathTxt = "wordList.txt";
 		List<Word> words = allWord();
-		// list uzunluğu kadar random değer ataması yapılacak
 		int randomWord = random.nextInt(words.size() - 1);
-		
 
 		long startTime = System.currentTimeMillis();
-
-		// Dosyanın maaksimum boyutu bayt değeri(4 GB)	
 		long maksimumBoyut = 4294967296L;
-
-		//Random değere göre dosyaya kelimeleri yazar.
 		try {
 			File filePath = new File(filePathTxt);
 
@@ -104,26 +131,27 @@ public class WordManager implements WordService {
 			BufferedWriter writer = new BufferedWriter(fileWriter);
 
 			long writteSize = 0;
-			logger.info("Random ilk değer atandı(index): " + randomWord + "dosya yazılıyor...");
+			logger.info("Random ilk değer atandı(index): " + randomWord + " dosya yazılıyor...");
 			while (writteSize < maksimumBoyut) {
 				writer.write(words.get(randomWord) + "\n");
 				writteSize = filePath.length();
 				randomWord = random.nextInt(words.size() - 1);
 			}
-			logger.info("Random olarak değerler dosya ya yazıldı(İlk değer): " +"("+ words.get(randomWord)+")");
+			logger.info("Random olarak değerler dosya ya yazıldı(İlk değer): " + "(" + words.get(randomWord) + ")");
 			writer.close();
 			long endTime = System.currentTimeMillis();
 			float fileSize = filePath.length() / (1024 * 1024 * 1024);
-			logger.info(fileSize + " GB dosya oluşturuldu. " + (endTime-startTime) + " saniye de tamamlandı");
+			logger.info(fileSize + " GB dosya oluşturuldu. " + (endTime - startTime) / 1000 / 60 / 60 + " saat "
+					+ (endTime - startTime) / 1000 / 60 + " dk " + ((endTime - startTime) / 1000) % 60
+					+ " sn tamamlandı.");
 		} catch (IOException e) {
 			logger.info(WordManager.class.getName() + e);
 		}
-		
+
 	}
 
 	@Override
 	public void wordsDesc() {
-		//Kelimelerin tekrarından kaçınmak için map kullandım.
 		Map<String, Integer> wordCounts = null;
 		List<String> wordAll = null;
 		try {
@@ -135,7 +163,6 @@ public class WordManager implements WordService {
 				String[] words = line.split("\\s+");
 				wordAll = new ArrayList<String>();
 
-				//kelimelerin başında ve sonundaki karakterler silinir.
 				for (String word : words) {
 					word = word.replaceAll("[.,=:;()-]", "");
 					if (word.length() > 4)
@@ -151,11 +178,10 @@ public class WordManager implements WordService {
 
 			reader.close();
 			long endTime = System.currentTimeMillis();
-			logger.info("En çok kullanılan en çok kelimeler bulundu." + (endTime-startTime) + " sn de tamamlandı.");
-
-			//Kelime tekrar sayısı azalana doğru
+			logger.info("En çok kullanılan en çok kelimeler bulundu." + (endTime - startTime) / 1000 / 60 / 60
+					+ " saat " + (endTime - startTime) / 1000 / 60 + " dk " + ((endTime - startTime) / 1000) % 60
+					+ " sn tamamlandı.");
 			this.businesRules.sortWordAll(wordCounts);
-			
 
 		} catch (IOException e) {
 			logger.info(WordManager.class.getName() + e);
@@ -163,22 +189,21 @@ public class WordManager implements WordService {
 
 	}
 
-} 
+}
+
 ```
 
 - WordBusinesRules
 
 ```java
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Service
-@Data
 @AllArgsConstructor
 public class WordBusinesRules {
 
-	public void sortWordAll(Map<String, Integer> wordCounts){
-		// Kelimeler ve tekrarlarını bulur ve ilk on değeri ekrana yazar
+	public void sortWordAll(Map<String, Integer> wordCounts) {
+
+		Formatter fmt = new Formatter();
+
 		List<Map.Entry<String, Integer>> list = new ArrayList<>(wordCounts.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
 			@Override
@@ -186,20 +211,22 @@ public class WordBusinesRules {
 				return o2.getValue().compareTo(o1.getValue());
 			}
 		});
-		
+		fmt.format("%15s %15s %15s\n", "Sıra", "Kelime", "Tekrar Sayısı");
 		int counter = 1;
 		for (Map.Entry<String, Integer> entry : list) {
-			System.out.println(counter + "." + entry.getKey() + ": " + entry.getValue());
+			fmt.format("%14s %14s %17s\n", counter, entry.getKey(), entry.getValue());
 
 			if (counter >= 10) {
 				break;
 			}
+
 			++counter;
 
 		}
-	
+		System.out.println(fmt);
+
 	}
-	
+
 }
 
 
@@ -208,40 +235,38 @@ public class WordBusinesRules {
 - WordController
 
 ```java
-package com.tugsef.worldlist.controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import com.tugsef.worldlist.business.abstracts.WordService;
 import com.tugsef.worldlist.business.concretes.WordManager;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
+@Controller
 @NoArgsConstructor
 public class WordController {
 
-    
- 
-    private WordService wordService = new WordManager();
-    
-    public void start() {
-    	this.wordService.startWordTxt();
-    	this.wordService.wordsDesc();
-    }
-	
+	private WordService wordService = new WordManager();
+	private Logger logger = LoggerFactory.getLogger(WordController.class);
+
+	public void start() {
+		long startTime = System.currentTimeMillis();
+		this.wordService.startWordTxt();
+		this.wordService.wordsDesc();
+		long endTime = System.currentTimeMillis();
+		logger.info("Toplam Okuma Yazma Geçen Süre :" + (endTime - startTime) / 1000 / 60 / 60 + " saat "
+				+ (endTime - startTime) / 1000 / 60 + " dk " + ((endTime - startTime) / 1000) % 60 + " sn tamamlandı.");
+	}
+
 }
 
 ```
 - Word
 
 ```java 
-package com.tugsef.worldlist.entities;
-
 import java.util.List;
-
-import org.springframework.stereotype.Controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -250,7 +275,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Controller
 public class Word {
 
 	private String word;
@@ -266,6 +290,8 @@ public class Word {
 		return word + " : " + meaning;
 	}
 }
+
+
 ```
 - WorldListApplication
 
