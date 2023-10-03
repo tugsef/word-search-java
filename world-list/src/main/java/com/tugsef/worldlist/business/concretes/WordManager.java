@@ -36,8 +36,10 @@ public class WordManager implements WordService {
 
 	@Override
 	public List<Word> allWord() {
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Word> worList = null;
+		
 		try {
 			worList = objectMapper.readValue(new File("wordList.json"), new TypeReference<List<Word>>() {
 			});
@@ -57,9 +59,10 @@ public class WordManager implements WordService {
 		String filePathTxt = "wordList.txt";
 		List<Word> words = allWord();
 		int randomWord = random.nextInt(words.size() - 1);
-
-		long startTime = System.currentTimeMillis();
+		
 		long maksimumBoyut = 4294967296L;
+		
+		long startTime = System.currentTimeMillis();
 		try {
 			File filePath = new File(filePathTxt);
 
@@ -100,6 +103,8 @@ public class WordManager implements WordService {
 			wordCounts = new TreeMap<>();
 			BufferedReader reader = new BufferedReader(new FileReader("wordList.txt"));
 			String line;
+			
+			
 			while ((line = reader.readLine()) != null) {
 				String[] words = line.split("\\s+");
 				wordAll = new ArrayList<String>();
@@ -110,6 +115,7 @@ public class WordManager implements WordService {
 						wordAll.add(word);
 
 				}
+
 				for (String word : wordAll) {
 					word = word.toLowerCase();
 					wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);

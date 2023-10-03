@@ -210,20 +210,16 @@ public class WordBusinesRules {
 			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
 				return o2.getValue().compareTo(o1.getValue());
 			}
-		});
-		fmt.format("%15s %15s %15s\n", "Sıra", "Kelime", "Tekrar Sayısı");
-		int counter = 1;
-		for (Map.Entry<String, Integer> entry : list) {
-			fmt.format("%14s %14s %17s\n", counter, entry.getKey(), entry.getValue());
+		});	
+	   
+		fmt.format("%15s  %15s\n", "Kelime", "Tekrar Sayısı");
+		 list.stream().limit(10).forEach(entry -> {			
+				fmt.format("%14s  %17s\n", entry.getKey(), entry.getValue());		
+		 });;
 
-			if (counter >= 10) {
-				break;
-			}
-
-			++counter;
-
-		}
 		System.out.println(fmt);
+
+	
 
 	}
 
