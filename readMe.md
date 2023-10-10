@@ -1,5 +1,7 @@
 
-- Sonuç
+# İş Görüşmesi Mülakat Sorusu ve Cevabı
+1. NodeJS yada java ile https://raw.githubusercontent.com/bilalozdemir/tr-word-list/master/files/words.json buradaki listede bulunan kelimeleri tamamen random kullanarak 4gb büyüklüğünde bir txt dosyası oluştur
+2. 4GB büyüklüğündeki dosyada en çok geçen 10 kelimeyi bul. Bu adımda kelimenin karakter sayısı 4'ten büyük  çok sık kullanılan bağlaçları kolayca filtrelemiş olur.
 
 ```log
   .   ____          _            __ _ _
